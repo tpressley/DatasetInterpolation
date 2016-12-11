@@ -4,9 +4,9 @@ import plotly.graph_objs as go
 import time 
 import datetime
 
-
+#I'm coding at 3:30 AM please forgive me I'll refactor later
 def main():
-    py.sign_in('tpressley', 'komTQBzvw4OWlX8u4cBO') #totally secure
+    py.sign_in('*****', '*****') #Obfuscated until I can take the time to add config files and such
     previous = TimestampMillisec64()
     print( "Starting...")
 
@@ -22,25 +22,53 @@ def main():
         ybs.append(int(s[2].strip('\n')))
     f.close()
 
-    #INDEX FOR CUBIC SUBSECTION
-    start = 0
-    end = 0
+    
+
+
     os = []
-    ls = subdivide(xs,4)
-    print (len(ls))
+    ls = subdivide(xs,6)
+
+    #INDEX FOR CUBIC SUBSECTION -- long set
+    #start = 0
+    #end = 0
+    #i = 0
+    #while(ls[i] < 9999):
+    #    i += 1
+    #    if(ls[i] < 0):
+    #        start = i
+    #    end = i
+    ##INDEX FOR CUBIC SUB -- X set
+    #xstart = 0
+    #xend = 0
+    #i = 0
+    #while(xs[i] < 9999):
+    #    i += 1
+    #    if(xs[i] < 0):
+    #        xstart = i
+    #    xend = i
     i = 0
+    print (len(ls))
+    #for x in ls[0:start]:
+    #    os.append(evalLeastSquares(x,xs[0:xstart],yas[0:xstart]))
+    #    print (len(ls) - (i))
+    #    i += 1
     for x in ls:
         os.append(evalCublicSplines(x,xs,yas))
         print (len(ls) - (i))
         i += 1
+    #for x in ls[end:len(ls)-1]:
+    #    os.append(evalLeastSquares(x,xs[xend:len(ls)-1],yas[xend:len(ls)-1]))
+    #    print (len(ls) - (i))
+    #    i += 1
     trace = go.Scatter(x = ls, y = os)
     data = [trace]
     py.iplot(data, filename='dataInterpolationAssignment')
 
+#Algorithm from http://blog.ivank.net/interpolation-with-cubic-splines.html
 def evalCublicSplines(x, xs, ys):
 
     i = 1
-    while(xs[i] < x):
+    while(xs[i] < x and i < len(xs) - 1):
         i += 1
     t = (x - xs[i-1]) / (xs[i] - xs[i-1])
     a = 0
@@ -71,8 +99,8 @@ def evalLeastSquares(x, xs, ys):
     for i in range(0,s1):
         sx += xs[i]
         sy += ys[i]
-        sxx = xs[i] * xs[i]
-        sxy = xs[i] * ys[i]
+        sxx += xs[i] * xs[i]
+        sxy += xs[i] * ys[i]
     m = (sxy * s1 - sx * sy) / (sxx * s1 - sx * sx)
     b = (sxy * sx - sy * sxx) / (sx * sx - s1 * sxx)
 
