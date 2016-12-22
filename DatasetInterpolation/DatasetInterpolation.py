@@ -26,34 +26,38 @@ def main():
 
 
     os = []
-    ls = subdivide(xs,6)
+    ls = subdivide(xs,2)
 
     #INDEX FOR CUBIC SUBSECTION -- long set
-    #start = 0
-    #end = 0
-    #i = 0
-    #while(ls[i] < 9999):
-    #    i += 1
-    #    if(ls[i] < 0):
-    #        start = i
-    #    end = i
-    ##INDEX FOR CUBIC SUB -- X set
-    #xstart = 0
-    #xend = 0
-    #i = 0
-    #while(xs[i] < 9999):
-    #    i += 1
-    #    if(xs[i] < 0):
-    #        xstart = i
-    #    xend = i
+    start = 0
+    end = 0
+    i = 0
+    while(ls[i] < 230):
+        i += 1
+        if(ls[i] < 220):
+            start = i
+        end = i
+    #INDEX FOR CUBIC SUB -- X set
+    xstart = 0
+    xend = 0
+    i = 0
+    while(xs[i] < 230):
+        i += 1
+        if(xs[i] < 220):
+            xstart = i
+        xend = i
     i = 0
     print (len(ls))
-    #for x in ls[0:start]:
-    #    os.append(evalLeastSquares(x,xs[0:xstart],yas[0:xstart]))
-    #    print (len(ls) - (i))
-    #    i += 1
-    for x in ls:
-        os.append(evalCublicSplines(x,xs,yas))
+    for x in ls[0:start]:
+        os.append(evalLeastSquares(x,xs[0:xstart],yas[0:xstart]))
+        print (len(ls) - (i))
+        i += 1
+    for x in ls[start:end]:
+        os.append(evalCublicSplines(x,xs[xstart:xend],yas[xstart:xend]))
+        print (len(ls) - (i))
+        i += 1
+    for x in ls[end:len(ls)-1]:
+        os.append(evalLeastSquares(x,xs[xend:len(ls)-1],yas[xend:len(ls)-1]))
         print (len(ls) - (i))
         i += 1
     #for x in ls[end:len(ls)-1]:
@@ -62,7 +66,7 @@ def main():
     #    i += 1
     trace = go.Scatter(x = ls, y = os)
     data = [trace]
-    py.iplot(data, filename='dataInterpolationAssignment')
+    py.iplot(data, filename='dataInterpolationAssignment-LSA')
 
 #Algorithm from http://blog.ivank.net/interpolation-with-cubic-splines.html
 def evalCublicSplines(x, xs, ys):
